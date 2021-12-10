@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-
+	log.Println("Running...")
 	addr := ":8080"
 	listener, err := net.Listen("tcp", addr)
 	if err != nil {
