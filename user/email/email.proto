@@ -1,0 +1,15 @@
+syntax = "proto3";
+package email;
+
+option go_package = "github.com/micro/user";
+
+message Email {
+  string uuid = 1;
+  string address = 2;
+  string subject = 3;
+  string body = 5;
+}
+
+service EmailService{
+  rpc Send(Email) returns (Email);
+}
