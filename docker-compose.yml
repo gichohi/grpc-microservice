@@ -1,0 +1,43 @@
+services:
+  user:
+    container_name: user
+    build:
+      context: .
+      dockerfile: ../user/Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/user
+    restart: always
+    depends_on:
+      - postgres
+      - message
+    networks: [ "microservices" ]
+  message:
+    container_name: message
+    build:
+      context: .
+      dockerfile: ../message/Dockerfile
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./:/message
+    restart: always
+    networks: [ "microservices" ]
+  postgres:
+    image: postgres:13-alpine
+    container_name: postgres
+    ports:
+      - "15432:5432"
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=vehicles
+      - POSTGRES_HOST=5432
+    volumes:
+      - ./microservices_pgdata:/var/lib/postgresql/data
+    networks: [ "microservices" ]
+networks:
+  microservices:
+    name: microservices
